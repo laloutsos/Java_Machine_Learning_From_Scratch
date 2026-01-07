@@ -1,0 +1,19 @@
+# Ignore all compiled class files
+*.class
+
+# Ignore build folders (common for IDEs)
+bin/
+out/
+build/
+
+# Ignore Eclipse specific files
+.project
+.classpath
+.settings/
+
+# Ignore IntelliJ IDEA specific files
+.idea/
+*.iml
+
+# Ignore Mac OS metadata
+.DS_Store
