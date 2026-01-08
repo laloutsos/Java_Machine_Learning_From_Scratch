@@ -15,9 +15,29 @@ public class Main {
         System.out.print("Do you want polynomial regression? (yes/no): ");
         String polyChoice = sc.next();
 
-        if (polyChoice.equalsIgnoreCase("yes")) {
+        boolean usePoly = polyChoice.equalsIgnoreCase("yes");
 
-            // 2️ Ask for non-linear dataset type
+        // 2️ Ask for cross-validation
+        boolean useCV = false;
+        int cvFolds = 5; // default
+        int maxDegree = 3; // default max degree for CV
+
+        if (usePoly) {
+            System.out.print("Do you want cross-validation to choose polynomial degree? (yes/no): ");
+            String cvChoice = sc.next();
+            useCV = cvChoice.equalsIgnoreCase("yes");
+
+            if (useCV) {
+                System.out.print("Maximum polynomial degree to try: ");
+                maxDegree = sc.nextInt();
+
+                System.out.print("Number of folds for cross-validation: ");
+                cvFolds = sc.nextInt();
+            }
+        }
+
+        if (usePoly) {
+            // 3️ Ask for non-linear dataset type
             System.out.print("Choose dataset type (sin / cubic / expcos): ");
             String datasetType = sc.next();
 
@@ -27,22 +47,30 @@ public class Main {
             System.out.print("Noise standard deviation (e.g., 0.1): ");
             double noise = sc.nextDouble();
 
-            System.out.print("Polynomial degree: ");
+            System.out.print("Polynomial degree (if no CV, e.g., 2): ");
             degree = sc.nextInt();
 
-            // 3️ Generate non-linear training dataset
+            // Generate dataset
             if (datasetType.equalsIgnoreCase("sin")) {
                 train = RegressionDataGenerator.generateSinDataset(nSamples, noise);
-                test = RegressionDataGenerator.generateSinDataset(nSamples, noise); // same distribution
+                test = RegressionDataGenerator.generateSinDataset(nSamples, noise);
             } else if (datasetType.equalsIgnoreCase("cubic")) {
                 train = RegressionDataGenerator.generatePolynomialDataset(nSamples, noise, degree);
                 test = RegressionDataGenerator.generatePolynomialDataset(nSamples, noise, degree);
             } else {
                 train = RegressionDataGenerator.generateExpCosDataset(nSamples, noise);
-                test = RegressionDataGenerator.generateExpCosDataset(nSamples, noise); // same distribution
+                test = RegressionDataGenerator.generateExpCosDataset(nSamples, noise);
             }
 
-            // 4️ Transform features to polynomial
+            // Cross-validation to pick degree
+            if (useCV) {
+                CVResult cvResult = CrossValidation.crossValidatePolynomial(train, maxDegree, cvFolds);
+                degree = cvResult.bestDegree;
+                System.out.println("\nBest polynomial degree from CV: " + degree);
+                System.out.printf("Cross-validation MSE: %.5f\n", cvResult.bestMSE);
+            }
+
+            // Transform features
             X_train = PolynomialFeatures.transform(train.X, degree);
             X_test = PolynomialFeatures.transform(test.X, degree);
 
@@ -64,16 +92,16 @@ public class Main {
             X_test = test.X;
         }
 
-        // 5️ Fit model using Least Squares
+        // ===== Fit model using Least Squares =====
         LeastSquares ls = new LeastSquares();
         double[] w_estimated = ls.LeastSquaresEstimator(X_train, train.Y);
 
-        // 6️ Display estimated weights
+        // Display estimated weights
         System.out.println("\nEstimated weights:");
         for (double w : w_estimated) System.out.print(w + " ");
         System.out.println();
 
-        // 7️ Predict on test set
+        // Predict on test set
         double[] Y_pred = new double[X_test.length];
         for (int i = 0; i < X_test.length; i++) {
             double y = 0;
@@ -83,13 +111,13 @@ public class Main {
             Y_pred[i] = y;
         }
 
-        // 8️ Display predictions vs actual
+        // Display predictions vs actual
         System.out.println("\nPredictions on test data:");
         for (int i = 0; i < Y_pred.length; i++) {
             System.out.printf("Predicted: %.3f\tActual: %.3f\n", Y_pred[i], test.Y[i]);
         }
 
-        // 9️ Compute MSE
+        // Compute MSE
         double mse = 0;
         for (int i = 0; i < Y_pred.length; i++) {
             double error = Y_pred[i] - test.Y[i];
@@ -98,7 +126,7 @@ public class Main {
         mse /= Y_pred.length;
         System.out.printf("\nMean Squared Error (MSE): %.5f\n", mse);
 
-        // 10️ Compute R^2
+        // Compute R^2
         double meanY = 0;
         for (double y : test.Y) meanY += y;
         meanY /= test.Y.length;
