@@ -2,7 +2,6 @@ import java.util.Random;
 
 public class RegressionDataGenerator {
 
-
     /**
      * Generates a random dataset suitable for Least Squares regression.
      * @param nSamples Number of samples
@@ -10,6 +9,8 @@ public class RegressionDataGenerator {
      * @param noise Standard deviation of Gaussian noise (0 for no noise)
      * @return Dataset object containing X, Y, and true weights
      */
+
+    
     public static Dataset generateDataset(int nSamples, int nFeatures, double noise) {
         Random rand = new Random();
 
@@ -65,6 +66,63 @@ public class RegressionDataGenerator {
         }
 
         return new Dataset(X, Y, trueWeights);
+    }
+
+    public static Dataset generateSinDataset(int nSamples, double noise) {
+        Random rand = new Random();
+        double[][] X = new double[nSamples][1];
+        double[] Y = new double[nSamples];
+
+        for (int i = 0; i < nSamples; i++) {
+            X[i][0] = rand.nextDouble() * 10; // X in [0,10]
+            Y[i] = Math.sin(X[i][0]) + rand.nextGaussian() * noise;
+        }
+
+        return new Dataset(X, Y, null);
+    }
+
+    /**
+     * Generate a dataset with Y = x + x^2 + ... + x^degree + Gaussian noise
+     */
+    public static Dataset generatePolynomialDataset(int nSamples, double noise, int degree) {
+        Random rand = new Random();
+        double[][] X = new double[nSamples][1];
+        double[] Y = new double[nSamples];
+
+        for (int i = 0; i < nSamples; i++) {
+            X[i][0] = rand.nextDouble() * 5; // X in [0,5]
+            double x = X[i][0];
+            double yValue = 0;
+
+            // Sum powers of x up to degree
+            for (int d = 1; d <= degree; d++) {
+                yValue += Math.pow(x, d);
+            }
+
+            // Add Gaussian noise
+            yValue += rand.nextGaussian() * noise;
+            Y[i] = yValue;
+        }
+
+        return new Dataset(X, Y, null);
+    }
+
+
+    /**
+     * Generate a dataset with Y = exp(-0.1X) + cos(0.5X) + Gaussian noise
+     */
+    public static Dataset generateExpCosDataset(int nSamples, double noise) {
+        Random rand = new Random();
+        double[][] X = new double[nSamples][1];
+        double[] Y = new double[nSamples];
+
+        for (int i = 0; i < nSamples; i++) {
+            X[i][0] = rand.nextDouble() * 20; // X in [0,20]
+            double x = X[i][0];
+            Y[i] = Math.exp(-0.1*x) + Math.cos(0.5*x) + rand.nextGaussian() * noise;
+        }
+
+        return new Dataset(X, Y, null);
     }
 
     // Example usage
