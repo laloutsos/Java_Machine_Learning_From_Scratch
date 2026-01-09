@@ -9,7 +9,8 @@ created for personal understanding and educational purposes.
 
 | # | Model / Topic                  | Description                                                                 | Notes                               |
 |---|--------------------------------|-----------------------------------------------------------------------------|-------------------------------------|
-| 1 | Linear & Polynomial Regression | Implemented matrix operations, dataset generators, Cross Validation learning and the least squares classifier from scratch. | See the folder for full code & examples |
+| 1 | Linear & Polynomial Regression | Implemented matrix operations, dataset generators, Cross Validation learning and the least squares classifier from scratch. Also implented
+a pipeline that can be called as a method to any Regression problem. | See the folder for full code & examples |
 
 ---
 
