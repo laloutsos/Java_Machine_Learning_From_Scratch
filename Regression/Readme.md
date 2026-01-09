@@ -9,8 +9,7 @@
 | **PolynomialFeatures** | Expands features to polynomial terms up to a given degree for polynomial regression. |
 | **CrossValidation** | Performs k-fold cross-validation to select the best polynomial degree and evaluate model performance. |
 | **CVResult** | Data type that stores the results of cross-validation, including the best polynomial degree and corresponding MSE. |
-| **Main** | Interactive program: asks user for dataset parameters, regression type, fits the model, predicts on new data, and computes metrics
- like MSE and R². |
+| **Main** | Interactive program: asks user for dataset parameters, regression type, fits the model, predicts on new data, and computes metrics like MSE and R². |
 | **RegressionPipeline** | A clean pipeline for solving regression problems using Cross-Validation with Polynomial Regression. |
 | **HousePriceEstimator** | A class where the model is trained in order to predict house prices from a real world problem. Also Feature Engineering is applied. |
 
