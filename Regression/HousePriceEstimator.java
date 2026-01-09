@@ -50,8 +50,6 @@ public class HousePriceEstimator {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== Polynomial Regression Pipeline ===");
-
         // 1️ Ask user for training CSV path
         System.out.print("Enter path to training CSV file: ");
         String csvPath = sc.nextLine();
@@ -66,7 +64,7 @@ public class HousePriceEstimator {
             e.printStackTrace();
             System.out.println("Error reading CSV file!");
         }
-        //Write your Feature Engineering
+        //Feature Engineering 
         Dataset dt_f = featureEngineering(dt);
 
 

@@ -23,14 +23,37 @@
  */
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 
 
 public class RegressionPipeline {
+    private double test_mse;
+    private double test_r2; 
+    private int degree;
 
+    public int getDegree(){
+        return degree;
+    }
+
+    public double get_test_r2(){
+        return test_r2;
+    }
+
+    public double get_test_mse(){
+        return test_mse;
+    }
+
+    public RegressionPipeline()
+    { }
+
+    public RegressionPipeline(double test_mse, double test_r2){
+        this.test_r2 = test_r2;
+        this.test_mse = test_mse;
+    }
 
     public static Dataset loadCSV(String filePath) throws IOException {
         ArrayList<double[]> featuresList = new ArrayList<>();
@@ -85,13 +108,13 @@ public class RegressionPipeline {
         int[] indices = new int[nSamples];
         for (int i = 0; i < nSamples; i++) indices[i] = i;
 
-        Random rnd = new Random();
-        for (int i = nSamples - 1; i > 0; i--) {
-            int j = rnd.nextInt(i + 1);
-            int tmp = indices[i];
-            indices[i] = indices[j];
-            indices[j] = tmp;
-        }
+        //Random rnd = new Random();
+        //for (int i = nSamples - 1; i > 0; i--) {
+            //int j = rnd.nextInt(i + 1);
+            //int tmp = indices[i];
+            //indices[i] = indices[j];
+            //indices[j] = tmp;
+        //}
 
         // Allocate arrays for train/test
         double[][] X_train = new double[nTrain][dataset.X[0].length];
@@ -131,6 +154,8 @@ public class RegressionPipeline {
 
         int degree = cvResult.bestDegree;
 
+        this.degree = degree;
+
 
 
         // Transform the features accordingly in order to perform polynomial regression 
@@ -168,7 +193,6 @@ public class RegressionPipeline {
             mse += error * error;
         }
         mse /= Y_pred.length;
-        System.out.printf("\nMean Squared Error (MSE): %.5f\n", mse);
 
         // Compute R^2
         double meanY = 0;
@@ -185,6 +209,12 @@ public class RegressionPipeline {
         double r2 = 1 - (ssRes / ssTot);
         System.out.println("\nBest polynomial degree from CV: " + degree);
         System.out.printf("Cross-validation MSE: %.5f\n", cvResult.bestMSE);
+
+        this.test_mse = mse;
+        this.test_r2 = r2;
+
+
+        System.out.printf("\nMean Squared Error on test set (MSE): %.5f\n", mse);
         System.out.printf("Coefficient of determination (R²) on test data: %.5f\n", r2);
 
         return w_estimated;
@@ -236,6 +266,19 @@ public class RegressionPipeline {
 
             System.out.printf("\nMean Squared Error (MSE): %.5f\n", mse);
             System.out.printf("Coefficient of determination (R²): %.5f\n", r2);
+        }
+
+        // --- Write predictions to CSV ---
+        try (FileWriter writer = new FileWriter("predictions.csv")) {
+            writer.write("id,predicted,actual\n");
+            for (int i = 0; i < Y_pred.length; i++) {
+                String actualValue = (dt.Y != null) ? String.valueOf(dt.Y[i]) : "";
+                writer.write(i + "," + Y_pred[i] + "," + actualValue + "\n");
+            }
+            System.out.println("\nPredictions saved to predictions.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error writing predictions to CSV!");
         }
     }
 
