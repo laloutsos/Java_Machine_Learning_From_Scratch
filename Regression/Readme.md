@@ -28,14 +28,14 @@ Both visual and quantitative methods are used to assess the model’s performanc
 ### Predicted vs Actual (per sample)
 The following plot shows the predicted values and the true values across the test samples.
 
-![Predicted vs Actual over samples](images\predicted_vs_actual.png)
+![Predicted vs Actual over samples](images/predicted_vs_actual.png)
 
 ---
 
 ### Predicted vs Actual (scatter plot)
 This scatter plot compares the predicted values against the actual values. The red dashed line represents the ideal case where predictions perfectly match the true values (*y = x*).
 
-![Predicted vs Actual scatter](images\predicted_vs_ideal_predictions.png)
+![Predicted vs Actual scatter](images/predicted_vs_ideal_predictions.png)
 
 Most points lie close to the diagonal, indicating that the model captures the overall trend well. Larger deviations can be observed for extreme values.
 
