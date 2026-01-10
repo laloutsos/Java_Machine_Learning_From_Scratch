@@ -74,6 +74,5 @@ Overall, the model can be considered a solid baseline, with room for much more i
 - Generates synthetic datasets for testing  
 - Computes **Mean Squared Error (MSE)** and **R²** for model evaluation  
 - **RegressionPipeline.java** can be called for any regression problem. You just need to load and feature-engineer the data set properly.
-- **TO DO:** Analysis of the results of HousePriceEstimator
 
 ---
