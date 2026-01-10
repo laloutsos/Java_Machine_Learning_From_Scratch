@@ -57,14 +57,6 @@ Overall, the model can be considered a solid baseline, with room for much more i
 
 ---
 
-## Future Improvements
-- Use richer or more informative input features  
-- Experiment with more expressive (non-linear or ensemble) models  
-- Improve handling of outliers and extreme values  
-
-
-
-
 ---
 
 ## Features
