@@ -11,8 +11,9 @@
 | **ModelAnalysis (Python Script)** | Performs post-training analysis of multiple neural network experiments by loading model statistics from CSV files, extracting architectural and hyperparameter features, and generating visualizations to study their impact on classification accuracy. |
 
 
-** Find full Project Analysis at: **
-[PDF](MLPReport.pdf)
+ Find full Project Analysis at: 
+
+[MLPReport](MLPReport.pdf)
 
 ---
 

@@ -10,6 +10,7 @@ created for personal understanding and educational purposes.
 | # | Model / Topic                  | Description                                                                 | Notes                               |
 |---|--------------------------------|-----------------------------------------------------------------------------|-------------------------------------|
 | 1 | Linear & Polynomial Regression | Implemented matrix operations, dataset generators, Cross Validation learning and the least squares classifier from scratch. Also implented a pipeline that can be called as a method to any Regression problem. | See the folder for full code & examples |
+| 2 | MultiLayer Perceptron Classifier | Implemented a multi-layer perceptron from scratch in Java, including forward/backward propagation, gradient descent training, configurable architectures, activation functions, dataset generators. | See folder for full code and execution examples |
 
 ---
 
